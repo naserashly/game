@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>City Investor</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#07182d;
+    color:white;
+}
+
+
+nav{
+    background:#0d2747;
+    padding:15px;
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+
+nav button{
+    background:none;
+    border:0;
+    color:#ffd700;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+
+nav button:hover{
+    color:white;
+}
+
+
+header{
+    text-align:center;
+    padding:30px;
+}
+
+
+h1,h2{
+    color:#ffd700;
+}
+
+
+.container{
+    padding:25px;
+}
+
+
+.card{
+    background:#102f52;
+    padding:20px;
+    border-radius:12px;
+    margin:15px 0;
+    box-shadow:0 5px 15px #000;
+}
+
+
+.grid{
+
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+}
+
+
+input{
+
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+
+    background:#07182d;
+    border:1px solid #31577d;
+    color:white;
+
+}
+
+
+button.action{
+
+    background:#d4af37;
+    color:black;
+    padding:12px 20px;
+    border:0;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
+
+}
+
+
+button.action:hover{
+
+    background:#ffd700;
+
+}
+
+
+.green{
+
+    color:#00ff7f;
+
+}
+
+
+.red{
+
+    color:#ff5555;
+
+}
+
+
+.hidden{
+
+    display:none;
+
+}
+
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+    background:#102f52;
+
+}
+
+
+td,th{
+
+    padding:12px;
+    border-bottom:1px solid #31577d;
+    text-align:center;
+
+}
+
+
+th{
+
+    color:#ffd700;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🏙️ City Investor</h1>
+
+<p>Build your property empire</p>
+
+</header>
+
+
+
+<nav>
+
+<button onclick="showPage('dashboard')">
+Dashboard
+</button>
+
+
+<button onclick="showPage('market')">
+Market
+</button>
+
+
+<button onclick="showPage('properties')">
+Properties
+</button>
+
+
+<button onclick="showPage('bank')">
+Bank
+</button>
+
+
+<button onclick="showPage('leaderboard')">
+Leaderboard
+</button>
+
+
+</nav>
+
+
+
+
+
+<section id="start" class="container">
+
+
+<div class="card">
+
+
+<h2>Create Investor</h2>
+
+
+<input id="playerName"
+placeholder="Investor name">
+
+
+<button class="action"
+onclick="startGame()">
+
+Start Game
+
+</button>
+
+
+<p>
+Starting money: $100,000
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<section id="dashboard" class="container hidden">
+
+
+<h2>Dashboard</h2>
+
+
+<div class="grid">
+
+
+<div class="card">
+Player
+<h3 id="dName"></h3>
+</div>
+
+
+<div class="card">
+Money
+<h3 id="dMoney"></h3>
+</div>
+
+
+<div class="card">
+Property Value
+<h3 id="dValue"></h3>
+</div>
+
+
+<div class="card">
+Debt
+<h3 id="dDebt"></h3>
+</div>
+
+
+<div class="card">
+Net Worth
+<h3 id="dWorth"></h3>
+</div>
+
+
+<div class="card">
+Daily Profit
+<h3 id="dProfit"></h3>
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<section id="market" class="container hidden">
+
+
+<h2>Property Market</h2>
+
+
+<div id="marketList"></div>
+
+
+</section>
+
+
+
+
+
+
+<section id="properties" class="container hidden">
+
+
+<h2>My Properties</h2>
+
+
+<div id="propertyList"></div>
+
+
+</section>
+
+
+
+
+
+
+<section id="bank" class="container hidden">
+
+
+<h2>City Bank</h2>
+
+
+<div class="card">
+
+
+<p>
+Loan limit: 50% of net worth
+</p>
+
+
+<input id="loanAmount"
+type="number"
+placeholder="Loan amount">
+
+
+<button class="action"
+onclick="takeLoan()">
+
+Take Loan
+
+</button>
+
+
+<button class="action"
+onclick="repayLoan()">
+
+Repay Loan
+
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<section id="leaderboard" class="container hidden">
+
+
+<h2>Top Investors</h2>
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+<th>Worth</th>
+<th>Profit</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="ranking">
+
+</tbody>
+
+
+</table>
+
+
+<br>
+
+
+<button class="action"
+onclick="exportSave()">
+
+Export Save
+
+</button>
+
+
+<input type="file"
+id="importFile">
+
+
+
+</section>
+<script>
+
+
+let player = null;
+
+
+
+const properties = [
+
+{
+id:1,
+name:"Small Downtown House",
+type:"House",
+district:"Downtown",
+price:180000,
+rent:1800,
+maintenance:200
+},
+
+
+{
+id:2,
+name:"Beach Apartment",
+type:"Apartment",
+district:"Beach",
+price:500000,
+rent:4000,
+maintenance:500
+},
+
+
+{
+id:3,
+name:"Industrial Shop",
+type:"Shop",
+district:"Industrial",
+price:350000,
+rent:5500,
+maintenance:700
+},
+
+
+{
+id:4,
+name:"Downtown Office",
+type:"Shop",
+district:"Downtown",
+price:900000,
+rent:12000,
+maintenance:1200
+},
+
+
+{
+id:5,
+name:"Luxury Beach Apartment",
+type:"Apartment",
+district:"Beach",
+price:1200000,
+rent:10000,
+maintenance:1000
+}
+
+];
+
+
+
+const districts = {
+
+Downtown:{
+multiplier:1.8,
+trend:0
+},
+
+Beach:{
+multiplier:2.3,
+trend:0
+},
+
+Industrial:{
+multiplier:0.7,
+trend:0
+}
+
+};
+
+
+
+let marketHistory={};
+
+
+
+
+
+function saveGame(){
+
+localStorage.setItem(
+"player",
+JSON.stringify(player)
+);
+
+
+localStorage.setItem(
+"properties",
+JSON.stringify(properties)
+);
+
+
+localStorage.setItem(
+"history",
+JSON.stringify(marketHistory)
+);
+
+}
+
+
+
+
+
+function loadGame(){
+
+
+const saved =
+localStorage.getItem("player");
+
+
+if(saved){
+
+player =
+JSON.parse(saved);
+
+}
+
+
+const history =
+localStorage.getItem("history");
+
+
+if(history){
+
+marketHistory =
+JSON.parse(history);
+
+}
+
+
+}
+
+
+
+
+
+function startGame(){
+
+
+let name =
+document.getElementById(
+"playerName"
+).value;
+
+
+if(name.trim()==""){
+
+alert("Enter your name");
+
+return;
+
+}
+
+
+
+player={
+
+name:name,
+
+money:100000,
+
+properties:[],
+
+debt:0,
+
+netWorth:100000,
+
+dailyProfit:0,
+
+lastUpdate:Date.now(),
+
+status:"Normal Investor"
+
+};
+
+
+
+saveGame();
+
+
+showPage("dashboard");
+
+
+updateAll();
+
+
+}
+
+
+
+
+
+function showPage(page){
+
+
+document
+.querySelectorAll("section")
+.forEach(
+s=>s.classList.add("hidden")
+);
+
+
+
+document
+.getElementById(page)
+.classList.remove("hidden");
+
+
+updateAll();
+
+
+}
+
+
+
+
+
+function money(value){
+
+return "$"+
+Math.floor(value)
+.toLocaleString();
+
+}
+
+
+
+
+
+function propertyValue(){
+
+
+let total=0;
+
+
+player.properties.forEach(p=>{
+
+total+=p.price;
+
+});
+
+
+return total;
+
+}
+
+
+
+
+
+function calculateWorth(){
+
+
+player.netWorth =
+
+player.money
++
+propertyValue()
+-
+player.debt;
+
+
+return player.netWorth;
+
+
+}
+
+
+
+
+
+function updateDashboard(){
+
+
+if(!player)return;
+
+
+document.getElementById(
+"dName"
+).innerHTML =
+player.name;
+
+
+document.getElementById(
+"dMoney"
+).innerHTML =
+money(player.money);
+
+
+document.getElementById(
+"dValue"
+).innerHTML =
+money(propertyValue());
+
+
+document.getElementById(
+"dDebt"
+).innerHTML =
+money(player.debt);
+
+
+document.getElementById(
+"dWorth"
+).innerHTML =
+money(calculateWorth());
+
+
+document.getElementById(
+"dProfit"
+).innerHTML =
+money(player.dailyProfit);
+
+
+}
+
+
+
+
+
+function displayMarket(){
+
+
+let box =
+document.getElementById(
+"marketList"
+);
+
+
+if(!box)return;
+
+
+box.innerHTML="";
+
+
+
+properties.forEach(p=>{
+
+
+let change =
+marketHistory[p.id] || 0;
+
+
+
+box.innerHTML += `
+
+<div class="card">
+
+<h3>${p.name}</h3>
+
+<p>${p.type}</p>
+
+<p>
+District:
+${p.district}
+</p>
+
+<p>
+Price:
+${money(p.price)}
+</p>
+
+<p>
+Rent:
+${money(p.rent)}
+</p>
+
+<p class="${change>=0?'green':'red'}">
+
+Change:
+${change.toFixed(2)}%
+
+</p>
+
+
+<button class="action"
+onclick="buyProperty(${p.id})">
+
+Buy
+
+</button>
+
+
+</div>
+
+`;
+
+
+});
+
+
+}
+
+
+
+
+
+function buyProperty(id){
+
+
+if(!player)return;
+
+
+
+let p =
+properties.find(
+x=>x.id==id
+);
+
+
+
+if(player.money < p.price){
+
+alert("Not enough money");
+
+return;
+
+}
+
+
+
+player.money -= p.price;
+
+
+player.properties.push({
+
+id:p.id,
+
+name:p.name,
+
+type:p.type,
+
+district:p.district,
+
+price:p.price,
+
+rent:p.rent,
+
+maintenance:p.maintenance
+
+});
+
+
+saveGame();
+
+
+updateAll();
+
+
+}
+
+
+
+
+
+function sellProperty(id){
+
+
+let index =
+player.properties.findIndex(
+p=>p.id==id
+);
+
+
+
+if(index==-1)return;
+
+
+let p =
+player.properties[index];
+
+
+let profit =
+p.price;
+
+
+let tax =
+profit*0.05;
+
+
+
+player.money +=
+profit-tax;
+
+
+player.properties.splice(
+index,
+1
+);
+
+
+saveGame();
+
+
+updateAll();
+
+
+}
+
+
+
+
+
+function displayProperties(){
+
+
+let box =
+document.getElementById(
+"propertyList"
+);
+
+
+if(!box)return;
+
+
+
+box.innerHTML="";
+
+
+
+if(player.properties.length==0){
+
+box.innerHTML =
+"<div class='card'>No properties owned</div>";
+
+return;
+
+}
+
+
+
+player.properties.forEach(p=>{
+
+
+box.innerHTML += `
+
+
+<div class="card">
+
+
+<h3>${p.name}</h3>
+
+<p>
+${p.district}
+</p>
+
+<p>
+Value:
+${money(p.price)}
+</p>
+
+<p>
+Rent:
+${money(p.rent)}
+</p>
+
+
+<button class="action"
+onclick="sellProperty(${p.id})">
+
+Sell
+
+</button>
+
+
+</div>
+
+
+`;
+
+});
+
+
+}
+
+
+
+
+
+function economyUpdate(){
+
+
+properties.forEach(p=>{
+
+
+let variation =
+0.95+
+Math.random()*0.10;
+
+
+
+let old =
+p.price;
+
+
+
+p.price =
+Math.floor(
+old*
+variation
+);
+
+
+
+marketHistory[p.id]=
+
+(
+(
+p.price-old
+)
+/
+old
+)
+*
+100;
+
+
+
+});
+
+
+
+updateOwnedPrices();
+
+
+}
+
+
+
+
+
+function updateOwnedPrices(){
+
+
+player.properties.forEach(
+owned=>{
+
+
+let market =
+properties.find(
+p=>p.id==owned.id
+);
+
+
+if(market){
+
+owned.price =
+market.price;
+
+}
+
+
+});
+
+
+}
+
+
+
+
+
+function collectDaily(){
+
+
+let income=0;
+
+
+let expenses=0;
+
+
+
+player.properties.forEach(p=>{
+
+
+income+=p.rent;
+
+
+expenses+=p.maintenance;
+
+
+});
+
+
+
+player.money +=
+income-expenses;
+
+
+player.dailyProfit =
+income-expenses;
+
+
+
+player.money -=
+propertyValue()*0.001;
+
+
+
+}
+function takeLoan(){
+
+
+let amount =
+Number(
+document.getElementById(
+"loanAmount"
+).value
+);
+
+
+let limit =
+player.netWorth*0.5;
+
+
+
+if(amount<=0){
+
+return;
+
+}
+
+
+
+if(amount>limit){
+
+alert(
+"Loan exceeds limit"
+);
+
+return;
+
+}
+
+
+
+player.money += amount;
+
+player.debt += amount;
+
+
+saveGame();
+
+updateAll();
+
+
+}
+
+
+
+
+
+function repayLoan(){
+
+
+let amount =
+Number(
+document.getElementById(
+"loanAmount"
+).value
+);
+
+
+
+if(amount>player.money){
+
+alert(
+"Not enough money"
+);
+
+return;
+
+}
+
+
+
+amount =
+Math.min(
+amount,
+player.debt
+);
+
+
+
+player.money -= amount;
+
+player.debt -= amount;
+
+
+saveGame();
+
+updateAll();
+
+
+}
+
+
+
+
+
+function bankUpdate(){
+
+
+if(player.debt>0){
+
+
+player.debt *=1.03;
+
+
+}
+
+
+
+player.money *=1.01;
+
+
+
+}
+
+
+
+
+
+function updateEconomy(){
+
+
+economyUpdate();
+
+
+collectDaily();
+
+
+bankUpdate();
+
+
+
+if(player.money<=0){
+
+
+player.money=0;
+
+
+player.status=
+"Poor Investor";
+
+
+}
+
+
+
+calculateWorth();
+
+
+updateLeaderboard();
+
+
+saveGame();
+
+
+}
+
+
+
+
+
+
+function updateLeaderboard(){
+
+
+let board =
+JSON.parse(
+localStorage.getItem(
+"leaderboard"
+)
+)
+|| [];
+
+
+
+let score={
+
+
+name:
+player.name,
+
+
+netWorth:
+player.netWorth,
+
+
+profit:
+player.netWorth-100000
+
+
+};
+
+
+
+
+let found =
+board.findIndex(
+x=>x.name==player.name
+);
+
+
+
+if(found>=0){
+
+board[found]=score;
+
+}
+else{
+
+board.push(score);
+
+}
+
+
+
+board.sort(
+(a,b)=>
+b.netWorth-a.netWorth
+);
+
+
+
+board =
+board.slice(0,20);
+
+
+
+localStorage.setItem(
+"leaderboard",
+JSON.stringify(board)
+);
+
+
+
+renderLeaderboard();
+
+
+}
+
+
+
+
+
+function renderLeaderboard(){
+
+
+let table =
+document.getElementById(
+"ranking"
+);
+
+
+if(!table)return;
+
+
+
+let board =
+JSON.parse(
+localStorage.getItem(
+"leaderboard"
+)
+)
+|| [];
+
+
+
+table.innerHTML="";
+
+
+
+board.forEach(
+p=>{
+
+
+table.innerHTML +=`
+
+<tr>
+
+<td>
+${p.name}
+</td>
+
+<td>
+${money(p.netWorth)}
+</td>
+
+<td>
+${money(p.profit)}
+</td>
+
+</tr>
+
+`;
+
+
+
+});
+
+
+}
+
+
+
+
+
+function exportSave(){
+
+
+let data =
+localStorage.getItem(
+"player"
+);
+
+
+
+let file =
+new Blob(
+[data],
+{
+type:"application/json"
+}
+);
+
+
+
+let link =
+document.createElement("a");
+
+
+
+link.href =
+URL.createObjectURL(file);
+
+
+
+link.download =
+"city-investor-save.json";
+
+
+
+link.click();
+
+
+}
+
+
+
+
+
+document
+.getElementById(
+"importFile"
+)
+.addEventListener(
+"change",
+function(e){
+
+
+let file =
+e.target.files[0];
+
+
+if(!file)return;
+
+
+
+let reader =
+new FileReader();
+
+
+
+reader.onload=function(){
+
+
+localStorage.setItem(
+"player",
+reader.result
+);
+
+
+
+location.reload();
+
+
+};
+
+
+
+reader.readAsText(file);
+
+
+
+});
+
+
+
+
+
+
+
+function updateAll(){
+
+
+updateDashboard();
+
+
+displayMarket();
+
+
+displayProperties();
+
+
+renderLeaderboard();
+
+
+}
+
+
+
+
+
+window.onload=function(){
+
+
+loadGame();
+
+
+if(player){
+
+
+showPage("dashboard");
+
+
+let now =
+Date.now();
+
+
+
+if(
+now-player.lastUpdate
+>=86400000
+){
+
+
+player.lastUpdate=now;
+
+
+updateEconomy();
+
+
+}
+
+
+
+}
+
+
+
+};
+
+
+
+
+
+</script>
+
+
+</body>
+
+</html>
