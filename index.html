@@ -3,35 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Investor 2.0 | Real Estate Tycoon</title>
+    <title>City Investor V6.0 | Logic Repair & Economic Overhaul</title>
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --border: rgba(255, 255, 255, 0.1);
+            --bg: #0b0f1a;
+            --card: #161c2d;
+            --border: rgba(255, 255, 255, 0.08);
             --accent: #3b82f6;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --text-main: #f1f5f9;
+            --text: #f1f5f9;
             --text-dim: #94a3b8;
             --glass: rgba(255, 255, 255, 0.03);
+            --spring: #4ade80;
+            --summer: #facc15;
+            --fall: #fb923c;
+            --winter: #60a5fa;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Dashboard Header */
+        /* --- DASHBOARD HEADER --- */
         header {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(10px);
+            background: rgba(11, 15, 26, 0.95);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
             padding: 1rem 2rem;
             position: sticky;
@@ -41,138 +38,79 @@
 
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
-            max-width: 1400px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 1.2rem;
+            max-width: 1500px;
             margin: 0 auto;
         }
 
-        .stat-item { text-align: center; }
-        .stat-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
-        .stat-value { font-size: 1.1rem; font-weight: 700; display: block; margin-top: 2px; }
-        .positive { color: var(--success); }
-        .negative { color: var(--danger); }
+        .stat-item { display: flex; flex-direction: column; align-items: center; }
+        .stat-label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .stat-value { font-size: 0.95rem; font-weight: 700; transition: color 0.3s; }
+        .indicator { padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; margin-top: 4px; color: white; }
 
-        /* Layout */
+        /* --- MAIN LAYOUT --- */
         .container {
             display: grid;
-            grid-template-columns: 280px 1fr 300px;
-            gap: 1.5rem;
-            padding: 1.5rem;
+            grid-template-columns: 240px 1fr 320px;
+            gap: 2rem;
+            padding: 2rem;
             max-width: 1600px;
             margin: 0 auto;
-            width: 100%;
-            flex-grow: 1;
         }
 
-        /* Sidebar Navigation */
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
+        nav { display: flex; flex-direction: column; gap: 0.5rem; }
         .nav-btn {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            padding: 1rem;
-            border-radius: 12px;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 500;
+            background: transparent; border: 1px solid transparent; color: var(--text-dim);
+            padding: 0.8rem 1rem; border-radius: 10px; text-align: left; cursor: pointer;
+            transition: 0.2s; display: flex; align-items: center; gap: 10px;
         }
+        .nav-btn:hover { background: var(--glass); color: var(--text); }
+        .nav-btn.active { background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
 
-        .nav-btn:hover { background: rgba(59, 130, 246, 0.1); border-color: var(--accent); }
-        .nav-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
-
-        /* Main Area */
-        .main-content { min-width: 0; }
         .view-section { display: none; animation: fadeIn 0.3s ease; }
         .view-section.active { display: block; }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Property Cards */
-        .market-grid, .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.25rem;
-            transition: transform 0.2s, border-color 0.2s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card:hover { border-color: rgba(59, 130, 246, 0.5); }
-        .card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; }
-        .property-type { font-size: 0.75rem; background: var(--accent); padding: 2px 8px; border-radius: 4px; }
-        .property-district { font-size: 0.75rem; color: var(--text-dim); }
-
-        .card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem; }
-        .card-stat { font-size: 0.85rem; }
-        .card-stat span { display: block; color: var(--text-dim); font-size: 0.7rem; }
+        /* --- CARDS & GRID --- */
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
 
         .btn {
-            width: 100%;
-            padding: 0.75rem;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: opacity 0.2s;
+            padding: 0.75rem 1rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600;
+            transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            font-size: 0.85rem;
         }
-        .btn-buy { background: var(--success); color: white; }
-        .btn-sell { background: var(--danger); color: white; }
-        .btn-upgrade { background: var(--warning); color: white; margin-bottom: 5px; }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-ghost { background: var(--glass); color: var(--text); border: 1px solid var(--border); }
 
-        /* Right Panel: Market News & Leaderboard */
-        .side-panel { display: flex; flex-direction: column; gap: 1rem; }
-        .panel-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1rem;
+        /* --- MODALS --- */
+        #modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
         }
-        .panel-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-dim); display: flex; align-items: center; gap: 5px; }
+        .modal {
+            background: var(--card); border: 1px solid var(--border);
+            width: 90%; max-width: 500px; border-radius: 24px; padding: 2rem;
+            position: relative; animation: modalSlide 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes modalSlide { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        .news-ticker { font-size: 0.8rem; max-height: 200px; overflow-y: auto; }
-        .news-item { padding: 8px 0; border-bottom: 1px solid var(--border); animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; } }
+        .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-dim); font-size: 1.5rem; cursor: pointer; }
 
-        .leaderboard-list { list-style: none; font-size: 0.85rem; }
-        .lb-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
-        .lb-player { color: var(--accent); font-weight: 700; }
+        /* --- PREVIEW UI --- */
+        .preview-box { background: var(--bg); padding: 15px; border-radius: 12px; margin: 15px 0; border: 1px solid var(--border); }
+        .preview-line { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.9rem; }
+        .preview-total { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); font-weight: bold; }
 
-        /* Bank View */
-        .bank-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
-        .loan-card { background: rgba(59, 130, 246, 0.1); border: 1px solid var(--accent); padding: 1.5rem; border-radius: 16px; text-align: center; }
-
-        /* Responsive */
         @media (max-width: 1100px) {
-            .container { grid-template-columns: 200px 1fr; }
+            .container { grid-template-columns: 1fr; }
+            nav { flex-direction: row; overflow-x: auto; white-space: nowrap; }
             .side-panel { display: none; }
         }
-
-        @media (max-width: 768px) {
-            .container { grid-template-columns: 1fr; }
-            .sidebar-nav { flex-direction: row; overflow-x: auto; }
-            .nav-btn { white-space: nowrap; }
-            header { padding: 0.5rem; }
-            .stat-value { font-size: 0.9rem; }
-        }
-
-        /* Scrollbars */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -180,449 +118,624 @@
     <header>
         <div class="stats-bar">
             <div class="stat-item">
-                <span class="stat-label">Investor Rank</span>
-                <span class="stat-value" id="stat-rank">Beginner 🌱</span>
+                <span class="stat-label">Season</span>
+                <span id="ui-season" class="indicator">Spring</span>
             </div>
             <div class="stat-item">
-                <span class="stat-label">Balance</span>
-                <span class="stat-value positive" id="stat-balance">$50,000</span>
+                <span class="stat-label">Market Heat</span>
+                <span id="ui-market-heat" class="indicator">🟡 Stable</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Cash</span>
+                <span id="ui-balance" class="stat-value">$50,000</span>
             </div>
             <div class="stat-item">
                 <span class="stat-label">Net Worth</span>
-                <span class="stat-value" id="stat-networth">$50,000</span>
+                <span id="ui-networth" class="stat-value">$50,000</span>
             </div>
             <div class="stat-item">
-                <span class="stat-label">Daily Cashflow</span>
-                <span class="stat-value" id="stat-cashflow">+$0</span>
+                <span class="stat-label">Total Debt</span>
+                <span id="ui-debt" class="stat-value" style="color:var(--danger)">$0</span>
             </div>
             <div class="stat-item">
-                <span class="stat-label">Debt</span>
-                <span class="stat-value negative" id="stat-debt">$0</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Market Status</span>
-                <span class="stat-value" id="stat-market">⚖ Stable</span>
+                <span class="stat-label">APR Rate</span>
+                <span id="ui-interest" class="stat-value">4.50%</span>
             </div>
         </div>
     </header>
 
     <div class="container">
-        <!-- Navigation -->
-        <div class="sidebar-nav">
-            <button class="nav-btn active" onclick="switchView('market')">🏙️ Property Market</button>
-            <button class="nav-btn" onclick="switchView('portfolio')">💼 My Portfolio</button>
-            <button class="nav-btn" onclick="switchView('bank')">🏦 Bank & Loans</button>
-            <div style="margin-top: auto; padding: 1rem;">
-                <button class="btn" style="background: var(--glass); color: var(--text-dim); font-size: 0.8rem;" onclick="saveGame()">💾 Save Game</button>
-                <button class="btn" style="background: transparent; color: var(--danger); font-size: 0.7rem; margin-top: 10px;" onclick="resetGame()">Reset Progress</button>
+        <nav>
+            <button class="nav-btn active" onclick="switchView('market', this)">🏙️ Market</button>
+            <button class="nav-btn" onclick="switchView('portfolio', this)">💼 Portfolio</button>
+            <button class="nav-btn" onclick="switchView('bank', this)">🏦 Bank</button>
+            <button class="nav-btn" onclick="switchView('stats', this)">📊 Metrics</button>
+            <div style="margin-top: auto; padding-top: 20px;">
+                <button class="btn btn-ghost" style="width: 100%" onclick="saveGame()">💾 Sync Cloud</button>
             </div>
-        </div>
+        </nav>
 
-        <!-- Main View -->
-        <main class="main-content">
-            
-            <!-- MARKET VIEW -->
+        <main>
+            <!-- MARKET -->
             <section id="view-market" class="view-section active">
-                <h2 style="margin-bottom: 1.5rem;">Available Properties</h2>
-                <div class="market-grid" id="market-list">
-                    <!-- Market properties injected here -->
+                <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2>Investment Opportunities</h2>
+                    <span id="ui-market-tier" style="font-size: 0.8rem; color: var(--text-dim);">Tier: Beginner</span>
                 </div>
+                <div id="market-grid" class="grid"></div>
             </section>
 
-            <!-- PORTFOLIO VIEW -->
+            <!-- PORTFOLIO -->
             <section id="view-portfolio" class="view-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h2>Your Investments</h2>
-                    <select id="portfolio-sort" onchange="renderPortfolio()" style="background: var(--card-bg); color: white; border: 1px solid var(--border); padding: 5px; border-radius: 5px;">
-                        <option value="newest">Newest First</option>
-                        <option value="value">Highest Value</option>
-                        <option value="rent">Highest Rent</option>
-                    </select>
+                <h2 style="margin-bottom: 1.5rem;">Asset Management</h2>
+                <div id="portfolio-grid" class="grid"></div>
+            </section>
+
+            <!-- BANK -->
+            <section id="view-bank" class="view-section">
+                <h2 style="margin-bottom: 1.5rem;">Financial Center</h2>
+                <div class="grid">
+                    <div class="card" style="border-left: 4px solid var(--accent);">
+                        <span class="stat-label">Available Credit</span>
+                        <div id="ui-bank-limit" class="stat-value" style="font-size: 1.8rem; margin: 10px 0;">$0</div>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <button class="btn btn-primary" onclick="showBorrowModal()">Borrow</button>
+                            <button class="btn btn-danger" onclick="showRepayModal()">Repay</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <span class="stat-label">Daily Interest</span>
+                        <div id="ui-daily-interest" class="stat-value" style="color:var(--danger)">$0</div>
+                        <span class="stat-label" style="margin-top:10px;">Credit Rating</span>
+                        <div id="ui-credit-score" class="stat-value">720</div>
+                    </div>
                 </div>
-                <div class="portfolio-grid" id="portfolio-list">
-                    <!-- Owned properties injected here -->
+                <div class="card">
+                    <h3>Bank Analytics</h3>
+                    <div class="preview-box">
+                        <div class="preview-line"><span>Monthly Interest Payment</span><span id="ui-bank-monthly">-</span></div>
+                        <div class="preview-line"><span>Debt-to-Asset Ratio</span><span id="ui-bank-ratio">-</span></div>
+                        <div class="preview-line"><span>Loan-to-Value (LTV)</span><span id="ui-bank-ltv">-</span></div>
+                    </div>
                 </div>
             </section>
 
-            <!-- BANK VIEW -->
-            <section id="view-bank" class="view-section">
-                <h2 style="margin-bottom: 1.5rem;">Financial Services</h2>
-                <div class="loan-card">
-                    <h3>Commercial Loan</h3>
-                    <p style="color: var(--text-dim); margin: 10px 0;">Current Interest Rate: <span id="bank-rate">5</span>%</p>
-                    <div class="bank-controls">
-                        <button class="btn btn-buy" onclick="takeLoan(10000)">Borrow $10,000</button>
-                        <button class="btn btn-buy" onclick="takeLoan(50000)">Borrow $50,000</button>
-                        <button class="btn btn-sell" onclick="repayLoan(10000)">Repay $10,000</button>
-                        <button class="btn btn-sell" onclick="repayLoan('all')">Repay All Debt</button>
+            <!-- STATS -->
+            <section id="view-stats" class="view-section">
+                <h2 style="margin-bottom: 1.5rem;">Global Metrics</h2>
+                <div class="grid">
+                    <div class="card">
+                        <span class="stat-label">Estimated Daily Net</span>
+                        <div id="ui-cashflow" class="stat-value">+$0</div>
                     </div>
+                    <div class="card">
+                        <span class="stat-label">Market Confidence</span>
+                        <div id="ui-confidence" class="stat-value">85%</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Interest Rate History (APR %)</h3>
+                    <div id="interest-graph" style="display:flex; align-items:flex-end; gap:5px; height:120px; margin-top:20px;"></div>
                 </div>
             </section>
         </main>
 
-        <!-- Sidebar Panels -->
-        <div class="side-panel">
-            <div class="panel-box">
-                <div class="panel-title">📰 Market News</div>
-                <div class="news-ticker" id="news-ticker">
-                    <div class="news-item">Welcome to City Investor 2.0. The market is currently stable.</div>
-                </div>
+        <aside class="side-panel">
+            <div class="card" style="padding: 1rem;">
+                <div class="stat-label">Macroeconomic News</div>
+                <div id="news-ticker" style="height: 350px; overflow-y: auto; margin-top: 10px; font-size: 0.85rem;"></div>
             </div>
+            <div class="card" style="padding: 1rem;">
+                <div class="stat-label">Top Investors</div>
+                <div id="leaderboard" style="margin-top: 10px;"></div>
+            </div>
+        </aside>
+    </div>
 
-            <div class="panel-box">
-                <div class="panel-title">🏆 Top Investors</div>
-                <div class="leaderboard-list" id="leaderboard">
-                    <!-- AI Competitors injected here -->
-                </div>
-            </div>
-        </div>
+    <!-- MODAL OVERLAY -->
+    <div id="modal-overlay">
+        <div id="modal-content" class="modal"></div>
     </div>
 
     <script>
         /**
-         * GAME STATE & CONFIGURATION
+         * CONFIGURATION & TEMPLATES
          */
-        let game = {
+        const SEASONS = [
+            { name: "Spring", icon: "🌱", color: "var(--spring)", mod: { upgrade: 0.8, price: 1.05 } },
+            { name: "Summer", icon: "☀️", color: "var(--summer)", mod: { upgrade: 1.0, price: 1.15 } },
+            { name: "Fall", icon: "🍂", color: "var(--fall)", mod: { upgrade: 1.0, price: 1.0 } },
+            { name: "Winter", icon: "❄️", color: "var(--winter)", mod: { upgrade: 1.2, price: 0.95 } }
+        ];
+
+        const PROPERTY_TEMPLATES = [
+            { id: 'apt', name: 'Studio Apartment', price: 60000, yield: 0.08, maint: 0.02, tier: 1, icon: '🏠' },
+            { id: 'house', name: 'Family Home', price: 220000, yield: 0.07, maint: 0.015, tier: 1, icon: '🏡' },
+            { id: 'cafe', name: 'Bistro Cafe', price: 180000, yield: 0.12, maint: 0.04, tier: 1, icon: '☕' },
+            { id: 'office', name: 'Business Suite', price: 950000, yield: 0.09, maint: 0.02, tier: 2, icon: '🏢' },
+            { id: 'retail', name: 'Shopping Strip', price: 3200000, yield: 0.11, maint: 0.03, tier: 2, icon: '🛍️' },
+            { id: 'hotel', name: 'Luxury Hotel', price: 18000000, yield: 0.14, maint: 0.05, tier: 3, icon: '🏨' },
+            { id: 'factory', name: 'Mega Factory', price: 75000000, yield: 0.10, maint: 0.02, tier: 3, icon: '🏭' }
+        ];
+
+        const NEWS_EVENTS = [
+            { title: "Central Bank Alert", msg: "Interest rates adjusted due to inflation data.", type: "macro" },
+            { title: "Housing Demand", msg: "Surge in residential buyers pushes prices up.", type: "macro" },
+            { title: "Tourism Boom", msg: "Hospitality sector sees record-breaking profits.", type: "macro" },
+            { title: "Economic Cooling", msg: "Market cooling down. Prices stabilizing.", type: "macro" }
+        ];
+
+        const DEFAULT_STATE = {
             money: 50000,
             debt: 0,
             properties: [],
-            marketState: 'Stable', // Stable, Boom, Recession
+            interestRate: 0.045,
+            marketState: 'Stable',
             marketTrend: 1.0,
-            interestRate: 0.05,
             day: 1,
-            aiInvestors: [
-                { name: "Nova Capital", worth: 150000 },
-                { name: "Elite Realty", worth: 80000 },
-                { name: "Apex Holdings", worth: 300000 }
+            seasonIndex: 0,
+            creditScore: 720,
+            history: { interest: [] },
+            ai: [
+                { name: "Vanguard Realty", worth: 500000 },
+                { name: "Summit Partners", worth: 8000000 },
+                { name: "Global Wealth", worth: 150000000 }
             ]
         };
 
-        const PROPERTY_TEMPLATES = [
-            { type: 'Small House', category: 'House', basePrice: 45000, rent: 400, maint: 50, risk: 'Low', district: 'Suburbs', icon: '🏡' },
-            { type: 'Modern Apartment', category: 'Apartment', basePrice: 120000, rent: 1100, maint: 150, risk: 'Low', district: 'Suburbs', icon: '🏢' },
-            { type: 'Corner Shop', category: 'Shop', basePrice: 85000, rent: 950, maint: 120, risk: 'Medium', district: 'Industrial', icon: '🛒' },
-            { type: 'Office Floor', category: 'Office', basePrice: 250000, rent: 2800, maint: 400, risk: 'Medium', district: 'Downtown', icon: '💼' },
-            { type: 'Boutique Hotel', category: 'Hotel', basePrice: 600000, rent: 7500, maint: 1200, risk: 'High', district: 'Beach', icon: '🏨' },
-            { type: 'Beach Villa', category: 'House', basePrice: 400000, rent: 4500, maint: 600, risk: 'High', district: 'Beach', icon: '🏖️' },
-            { type: 'Factory Space', category: 'Office', basePrice: 180000, rent: 2200, maint: 300, risk: 'Medium', district: 'Industrial', icon: '🏭' },
-            { type: 'Penthouse', category: 'Apartment', basePrice: 850000, rent: 9000, maint: 1500, risk: 'Low', district: 'Downtown', icon: '💎' }
-        ];
+        let game = { ...DEFAULT_STATE };
 
-        const DISTRICT_EFFECTS = {
-            'Downtown': { priceMod: 1.2, growth: 1.05 },
-            'Beach': { priceMod: 1.3, growth: 1.10 },
-            'Suburbs': { priceMod: 0.9, growth: 1.02 },
-            'Industrial': { priceMod: 0.8, growth: 1.01 }
+        /**
+         * ECONOMY ENGINE (V6 Logic Fixes)
+         */
+        const EconomyEngine = {
+            // P2: Real interest shifts based on cycle
+            updateInterest() {
+                const rng = Math.random();
+                if (game.marketState === "Boom") {
+                    game.interestRate = 0.06 + (rng * 0.04); // 6-10%
+                } else if (game.marketState === "Recession") {
+                    game.interestRate = 0.01 + (rng * 0.03); // 1-4%
+                } else {
+                    game.interestRate = 0.03 + (rng * 0.03); // 3-6%
+                }
+                game.history.interest.push(game.interestRate);
+                if (game.history.interest.length > 25) game.history.interest.shift();
+            },
+
+            // P3: Global price shifts
+            updateMarketTrend() {
+                const drift = (Math.random() * 0.02) - 0.01;
+                if (game.marketState === "Boom") game.marketTrend *= (1.008 + drift);
+                if (game.marketState === "Recession") game.marketTrend *= (0.99 + drift);
+                if (game.marketState === "Stable") game.marketTrend *= (1.001 + drift);
+            },
+
+            // P4 & P8: Proper Rent and Maintenance calculation
+            calculateProfit(p) {
+                // Rent = Current Value * Annual Yield / 365
+                const dailyRent = (p.currentVal * p.yield) / 365;
+                
+                // Maint = Current Value * Annual Maint / 365
+                const dailyMaint = (p.currentVal * p.maint) / 365;
+                
+                // P8: Property Taxes (0.5% annual)
+                const dailyTax = (p.currentVal * 0.005) / 365;
+
+                // Penalty based on Interest Rate (Macro impact)
+                const interestPenalty = Math.exp(-game.interestRate * 2.5);
+
+                return (dailyRent * interestPenalty) - dailyMaint - dailyTax;
+            },
+
+            // P9: Dynamic Credit Score
+            updateCreditScore() {
+                const ltv = game.debt / Math.max(1, calculateTotalAssets());
+                const cashReserve = game.money / Math.max(1, game.debt);
+                
+                let score = 720;
+                if (ltv > 0.7) score -= 100;
+                if (ltv < 0.3) score += 50;
+                if (cashReserve > 0.5) score += 50;
+                if (game.money < 0) score -= 200;
+
+                game.creditScore = Math.min(850, Math.max(300, score));
+            }
         };
 
-        let currentMarketItems = [];
-
         /**
-         * CORE ENGINE
+         * CORE LOOP
          */
-        function init() {
-            loadGame();
-            generateMarket();
-            updateUI();
-            
-            // Game Loop (1 day = 5 seconds)
-            setInterval(() => {
-                gameTick();
-            }, 5000);
-        }
-
         function gameTick() {
             game.day++;
-            
-            // Calculate Financials
-            let totalRent = 0;
-            let totalMaint = 0;
-            
+
+            // Macro Changes
+            EconomyEngine.updateMarketTrend();
+            if (game.day % 10 === 0) {
+                const states = ['Stable', 'Boom', 'Stable', 'Recession'];
+                game.marketState = states[Math.floor(Math.random() * states.length)];
+                EconomyEngine.updateInterest();
+                generateMarket();
+                EconomyEngine.updateCreditScore();
+                triggerMacroEvent();
+            }
+            if (game.day % 30 === 0) game.seasonIndex = (game.seasonIndex + 1) % 4;
+
+            // P1: FIXED CASHFLOW LOGIC
+            const dailyInterest = game.debt * (game.interestRate / 365);
+            let dailyProfit = 0;
             game.properties.forEach(p => {
-                totalRent += p.currentRent;
-                totalMaint += p.currentMaint;
+                dailyProfit += EconomyEngine.calculateProfit(p);
+                // Update asset value based on market drift
+                p.currentVal *= (1 + (Math.random() * 0.002 - 0.001));
             });
 
-            // Loan Interest
-            let interestPayment = game.debt * (game.interestRate / 30);
-            
-            let netCashflow = totalRent - totalMaint - interestPayment;
-            game.money += netCashflow;
-
-            // Economy Shift
-            if (game.day % 15 === 0) {
-                shiftMarket();
-            }
+            const netCashflow = dailyProfit - dailyInterest;
+            game.money += netCashflow; // P1: Money is now actually added
 
             // AI Progress
-            game.aiInvestors.forEach(ai => {
-                ai.worth *= (1 + (Math.random() * 0.02 * (game.marketTrend)));
-            });
+            game.ai.forEach(a => a.worth *= (1 + (Math.random() * 0.01)));
 
-            // Update items
             updateUI();
         }
 
-        function shiftMarket() {
-            const states = ['Stable', 'Stable', 'Boom', 'Recession'];
-            game.marketState = states[Math.floor(Math.random() * states.length)];
-            
-            if (game.marketState === 'Boom') {
-                game.marketTrend = 1.15;
-                logNews("📈 ECONOMIC BOOM! Property prices and demand are soaring.");
-            } else if (game.marketState === 'Recession') {
-                game.marketTrend = 0.85;
-                logNews("📉 RECESSION! Investors are selling off as prices drop.");
-            } else {
-                game.marketTrend = 1.0;
-                logNews("⚖ Market has stabilized. Interest rates remain steady.");
-            }
-            
-            // Interest rates fluctuate slightly
-            game.interestRate = 0.03 + (Math.random() * 0.06);
-            
-            generateMarket();
-        }
-
         /**
-         * UI RENDERERS
+         * ACTIONS & MODALS
          */
-        function updateUI() {
-            const netWorth = calculateNetWorth();
+        function buyAsset(tid, isRented) {
+            const t = PROPERTY_TEMPLATES.find(x => x.id === tid);
+            const season = SEASONS[game.seasonIndex];
             
-            // Header Stats
-            document.getElementById('stat-balance').innerText = `$${Math.floor(game.money).toLocaleString()}`;
-            document.getElementById('stat-networth').innerText = `$${Math.floor(netWorth).toLocaleString()}`;
-            document.getElementById('stat-debt').innerText = `$${Math.floor(game.debt).toLocaleString()}`;
-            document.getElementById('stat-market').innerText = (game.marketState === 'Boom' ? '📈 ' : game.marketState === 'Recession' ? '📉 ' : '⚖ ') + game.marketState;
-            document.getElementById('bank-rate').innerText = (game.interestRate * 100).toFixed(1);
+            // P3: Dynamic pricing
+            const currentMarketPrice = t.price * game.marketTrend * season.mod.price;
+            const deposit = currentMarketPrice * 0.2;
+            const cost = isRented ? deposit : currentMarketPrice;
 
-            // Cashflow calculation for UI
-            let rent = game.properties.reduce((sum, p) => sum + p.currentRent, 0);
-            let maint = game.properties.reduce((sum, p) => sum + p.currentMaint, 0);
-            let cashflow = rent - maint - (game.debt * (game.interestRate / 30));
-            
-            const cashflowEl = document.getElementById('stat-cashflow');
-            cashflowEl.innerText = (cashflow >= 0 ? '+' : '') + Math.floor(cashflow).toLocaleString();
-            cashflowEl.className = 'stat-value ' + (cashflow >= 0 ? 'positive' : 'negative');
-
-            // Rank
-            let rank = "Beginner 🌱";
-            if (netWorth > 100000) rank = "Property Owner 🏠";
-            if (netWorth > 500000) rank = "Investor 🏢";
-            if (netWorth > 2000000) rank = "Millionaire 💰";
-            if (netWorth > 10000000) rank = "Real Estate Legend 👑";
-            document.getElementById('stat-rank').innerText = rank;
-
-            renderLeaderboard(netWorth);
-            renderPortfolio();
-        }
-
-        function generateMarket() {
-            currentMarketItems = [];
-            // Pick 4 random templates and apply market modifiers
-            for(let i=0; i<4; i++) {
-                const t = PROPERTY_TEMPLATES[Math.floor(Math.random() * PROPERTY_TEMPLATES.length)];
-                const dist = DISTRICT_EFFECTS[t.district];
-                
-                const price = t.basePrice * dist.priceMod * game.marketTrend * (0.9 + Math.random() * 0.2);
-                
-                currentMarketItems.push({
-                    ...t,
-                    id: Date.now() + i,
-                    currentPrice: Math.floor(price),
-                    currentRent: t.rent,
-                    currentMaint: t.maint,
-                    level: 1
+            if (game.money >= cost) {
+                game.money -= cost;
+                game.properties.push({
+                    id: self.crypto.randomUUID(),
+                    name: t.name,
+                    icon: t.icon,
+                    yield: t.yield,
+                    maint: t.maint,
+                    purchasePrice: currentMarketPrice,
+                    currentVal: currentMarketPrice,
+                    level: 1,
+                    isRented: isRented,
+                    deposit: isRented ? deposit : 0
                 });
-            }
-            renderMarket();
-        }
-
-        function renderMarket() {
-            const list = document.getElementById('market-list');
-            list.innerHTML = '';
-            currentMarketItems.forEach((p, index) => {
-                list.innerHTML += `
-                    <div class="card">
-                        <div class="card-header">
-                            <div>
-                                <span class="property-type">${p.category}</span>
-                                <div style="margin-top:5px; font-weight:bold;">${p.icon} ${p.type}</div>
-                                <span class="property-district">${p.district}</span>
-                            </div>
-                            <div style="text-align:right">
-                                <span style="font-weight:800; color:var(--success);">$${p.currentPrice.toLocaleString()}</span>
-                                <div style="font-size:0.6rem; color:var(--text-dim)">Market Value</div>
-                            </div>
-                        </div>
-                        <div class="card-stats">
-                            <div class="card-stat"><span>Est. Rent</span>$${p.currentRent.toLocaleString()}</div>
-                            <div class="card-stat"><span>Risk Level</span>${p.risk}</div>
-                        </div>
-                        <button class="btn btn-buy" onclick="buyProperty(${index})">Purchase Property</button>
-                    </div>
-                `;
-            });
-        }
-
-        function renderPortfolio() {
-            const list = document.getElementById('portfolio-list');
-            const sort = document.getElementById('portfolio-sort').value;
-            
-            let sorted = [...game.properties];
-            if (sort === 'value') sorted.sort((a,b) => b.currentPrice - a.currentPrice);
-            if (sort === 'rent') sorted.sort((a,b) => b.currentRent - a.currentRent);
-
-            list.innerHTML = '';
-            if (sorted.length === 0) {
-                list.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--text-dim);">No properties owned. Visit the market to start investing.</div>`;
-            }
-
-            sorted.forEach(p => {
-                // Calculate current market value of owned property
-                const val = p.currentPrice * game.marketTrend;
-                list.innerHTML += `
-                    <div class="card">
-                        <div class="card-header">
-                            <div>
-                                <span class="property-type">Lvl ${p.level}</span>
-                                <div style="margin-top:5px; font-weight:bold;">${p.icon} ${p.type}</div>
-                            </div>
-                            <div style="text-align:right">
-                                <span style="font-weight:800;">$${Math.floor(val).toLocaleString()}</span>
-                            </div>
-                        </div>
-                        <div class="card-stats">
-                            <div class="card-stat"><span>Net Rent</span><span class="positive">+$${(p.currentRent - p.currentMaint).toLocaleString()}</span></div>
-                            <div class="card-stat"><span>Location</span>${p.district}</div>
-                        </div>
-                        <button class="btn btn-upgrade" onclick="upgradeProperty(${p.id})">Upgrade ($${Math.floor(p.currentPrice * 0.5).toLocaleString()})</button>
-                        <button class="btn btn-sell" onclick="sellProperty(${p.id})">Sell for $${Math.floor(val * 0.95).toLocaleString()}</button>
-                    </div>
-                `;
-            });
-        }
-
-        function renderLeaderboard(playerWorth) {
-            const lb = document.getElementById('leaderboard');
-            let entries = [...game.aiInvestors, { name: "You (Investor)", worth: playerWorth, isPlayer: true }];
-            entries.sort((a,b) => b.worth - a.worth);
-            
-            lb.innerHTML = '';
-            entries.forEach((en, i) => {
-                lb.innerHTML += `
-                    <li class="lb-item">
-                        <span class="${en.isPlayer ? 'lb-player' : ''}">${i+1}. ${en.name}</span>
-                        <span>$${Math.floor(en.worth).toLocaleString()}</span>
-                    </li>
-                `;
-            });
-        }
-
-        /**
-         * ACTIONS
-         */
-        function buyProperty(index) {
-            const p = currentMarketItems[index];
-            if (game.money >= p.currentPrice) {
-                game.money -= p.currentPrice;
-                game.properties.push({...p});
-                currentMarketItems.splice(index, 1);
-                logNews(`Purchased ${p.type} in ${p.district}.`);
-                renderMarket();
+                Modal.close();
+                logNews(`Acquired ${t.name} for ${f(cost)}`);
                 updateUI();
             } else {
-                alert("Insufficient funds! Consider taking a loan.");
+                alert("Insufficient funds!");
             }
         }
 
-        function sellProperty(id) {
-            const idx = game.properties.findIndex(p => p.id === id);
-            if (idx > -1) {
-                const p = game.properties[idx];
-                const sellValue = (p.currentPrice * game.marketTrend) * 0.95; // 5% closing costs
-                game.money += sellValue;
-                game.properties.splice(idx, 1);
-                logNews(`Sold ${p.type} for $${Math.floor(sellValue).toLocaleString()}.`);
-                updateUI();
-            }
+        // P5: Upgrade Preview Modal
+        function showUpgradeModal(pid) {
+            const p = game.properties.find(x => x.id === pid);
+            const cost = calculateUpgradeCost(p);
+            const currentIncome = EconomyEngine.calculateProfit(p);
+            
+            // Preview logic: Leveling increases current value (renovation)
+            const newVal = p.currentVal * 1.35;
+            const newIncome = (newVal * p.yield) / 365; // Simplified preview
+            
+            const roi = ((newIncome - currentIncome) * 365 / cost) * 100;
+
+            Modal.show(`
+                <h3>Renovate & Upgrade</h3>
+                <p>${p.icon} ${p.name} (Lvl ${p.level})</p>
+                <div class="preview-box">
+                    <div class="preview-line"><span>Upgrade Cost</span><span style="color:var(--warning)">${f(cost)}</span></div>
+                    <div class="preview-line"><span>Valuation Increase</span><span>${f(p.currentVal)} ➔ ${f(newVal)}</span></div>
+                    <div class="preview-line"><span>Daily Profit Change</span><span style="color:var(--success)">+${f(newIncome - currentIncome)}/day</span></div>
+                    <div class="preview-line preview-total"><span>Expected ROI</span><span>${roi.toFixed(1)}%</span></div>
+                </div>
+                <button class="btn btn-primary" style="width:100%" onclick="executeUpgrade('${pid}')" ${game.money < cost ? 'disabled' : ''}>
+                    Confirm Upgrade
+                </button>
+            `);
         }
 
-        function upgradeProperty(id) {
-            const p = game.properties.find(p => p.id === id);
-            const cost = p.currentPrice * 0.5;
+        function executeUpgrade(pid) {
+            const p = game.properties.find(x => x.id === pid);
+            const cost = calculateUpgradeCost(p);
             if (game.money >= cost) {
                 game.money -= cost;
                 p.level++;
-                p.currentRent *= 1.6;
-                p.currentPrice *= 1.4;
-                logNews(`Upgraded ${p.type} to Level ${p.level}.`);
+                p.currentVal *= 1.35; // P4: Leveling increases Value, Profit follows Value
+                logNews(`Upgraded ${p.name} to Level ${p.level}`);
+                Modal.close();
                 updateUI();
-            } else {
-                alert("Not enough money for renovations.");
             }
         }
 
-        function takeLoan(amt) {
-            game.debt += amt;
-            game.money += amt;
+        // P5 & P6: Transaction Previews
+        function showSalePreview(pid) {
+            const p = game.properties.find(x => x.id === pid);
+            const rate = game.marketState === "Boom" ? 0.98 : (game.marketState === "Recession" ? 0.80 : 0.92);
+            
+            if (p.isRented) {
+                const penalty = p.deposit * 0.4;
+                const refund = p.deposit - penalty;
+                Modal.show(`
+                    <h3>Terminate Lease</h3>
+                    <div class="preview-box">
+                        <div class="preview-line"><span>Initial Deposit</span><span>${f(p.deposit)}</span></div>
+                        <div class="preview-line"><span>Cancellation Fee</span><span style="color:var(--danger)">-${f(penalty)}</span></div>
+                        <div class="preview-line preview-total"><span>Total Refund</span><span>${f(refund)}</span></div>
+                    </div>
+                    <button class="btn btn-danger" style="width:100%" onclick="executeSell('${pid}', ${refund})">Break Contract</button>
+                `);
+            } else {
+                const sellValue = p.currentVal * rate;
+                const profit = sellValue - p.purchasePrice;
+                Modal.show(`
+                    <h3>Sell Asset</h3>
+                    <div class="preview-box">
+                        <div class="preview-line"><span>Market Valuation</span><span>${f(p.currentVal)}</span></div>
+                        <div class="preview-line"><span>Market Fee (${((1-rate)*100).toFixed(0)}%)</span><span>-${f(p.currentVal - sellValue)}</span></div>
+                        <div class="preview-line preview-total"><span>Net Sale Proceeds</span><span style="color:var(--success)">${f(sellValue)}</span></div>
+                        <div class="preview-line"><span>Total P/L</span><span style="${profit >= 0 ? 'color:var(--success)' : 'color:var(--danger)'}">${f(profit)}</span></div>
+                    </div>
+                    <button class="btn btn-primary" style="width:100%" onclick="executeSell('${pid}', ${sellValue})">Confirm Sale</button>
+                `);
+            }
+        }
+
+        function executeSell(pid, amount) {
+            const idx = game.properties.findIndex(x => x.id === pid);
+            game.money += amount;
+            game.properties.splice(idx, 1);
+            Modal.close();
             updateUI();
         }
 
-        function repayLoan(amt) {
-            if (amt === 'all') amt = game.debt;
-            const actualRepay = Math.min(game.money, game.debt, amt);
-            game.money -= actualRepay;
-            game.debt -= actualRepay;
-            updateUI();
+        /**
+         * BANKING (P6 & P12)
+         */
+        function showBorrowModal() {
+            const limit = calculateLoanLimit();
+            const available = limit - game.debt;
+            if (available <= 0) {
+                alert("Credit limit reached. Increase collateral.");
+                return;
+            }
+            Modal.show(`
+                <h3>Request Commercial Loan</h3>
+                <p>Available Credit: ${f(available)}</p>
+                <input type="range" id="loan-slider" style="width:100%; margin:20px 0;" min="0" max="${available}" step="1000" value="0" oninput="document.getElementById('loan-val').innerText = f(this.value)">
+                <div id="loan-val" style="font-size:1.5rem; font-weight:bold; text-align:center; margin-bottom:15px;">$0</div>
+                <button class="btn btn-primary" style="width:100%" onclick="executeBorrow()">Get Funds</button>
+            `);
+        }
+
+        function executeBorrow() {
+            const val = parseInt(document.getElementById('loan-slider').value);
+            if (val > 0) {
+                game.debt += val;
+                game.money += val;
+                Modal.close();
+                updateUI();
+            }
+        }
+
+        function showRepayModal() {
+            const max = Math.min(game.money, game.debt);
+            Modal.show(`
+                <h3>Repay Debt</h3>
+                <input type="number" id="repay-in" placeholder="Enter Amount" style="width:100%; padding:10px; background:var(--bg); border:1px solid var(--border); color:white; border-radius:8px;">
+                <button class="btn btn-danger" style="width:100%; margin-top:10px;" onclick="executeRepay()">Confirm Payment</button>
+            `);
+        }
+
+        function executeRepay() {
+            const val = parseInt(document.getElementById('repay-in').value);
+            const actual = Math.min(game.money, game.debt, val);
+            if (actual > 0) {
+                game.money -= actual;
+                game.debt -= actual;
+                Modal.close();
+                updateUI();
+            }
+        }
+
+        /**
+         * UI RENDERING
+         */
+        function updateUI() {
+            const nw = calculateNetWorth();
+            const season = SEASONS[game.seasonIndex];
+            const assets = calculateTotalAssets();
+
+            // Header
+            document.getElementById('ui-season').innerText = season.icon + " " + season.name;
+            document.getElementById('ui-season').style.background = season.color;
+            document.getElementById('ui-market-heat').innerText = (game.marketState === "Boom" ? "🔥 Boom" : (game.marketState === "Recession" ? "🔴 Crash" : "🟡 Stable"));
+            document.getElementById('ui-balance').innerText = f(game.money);
+            document.getElementById('ui-networth').innerText = f(nw);
+            document.getElementById('ui-debt').innerText = f(game.debt);
+            document.getElementById('ui-interest').innerText = (game.interestRate * 100).toFixed(2) + "%";
+
+            // Bank View (P12)
+            const dailyI = game.debt * (game.interestRate / 365);
+            const limit = calculateLoanLimit();
+            document.getElementById('ui-bank-limit').innerText = f(Math.max(0, limit - game.debt));
+            document.getElementById('ui-daily-interest').innerText = "-" + f(dailyI);
+            document.getElementById('ui-credit-score').innerText = game.creditScore;
+            document.getElementById('ui-bank-monthly').innerText = f(dailyI * 30);
+            document.getElementById('ui-bank-ratio').innerText = ((game.debt / Math.max(1, nw)) * 100).toFixed(1) + "%";
+            document.getElementById('ui-bank-ltv').innerText = ((game.debt / Math.max(1, assets)) * 100).toFixed(1) + "%";
+
+            // Stats
+            const cashflow = game.properties.reduce((s, p) => s + EconomyEngine.calculateProfit(p), 0) - dailyI;
+            document.getElementById('ui-cashflow').innerText = (cashflow >= 0 ? "+" : "") + f(cashflow);
+            document.getElementById('ui-cashflow').style.color = cashflow >= 0 ? "var(--success)" : "var(--danger)";
+            document.getElementById('ui-market-tier').innerText = `Tier: ${nw < 250000 ? 'Beginner' : (nw < 5000000 ? 'Professional' : 'Tycoon')}`;
+
+            renderPortfolio();
+            renderLeaderboard();
+            renderInterestGraph();
+        }
+
+        function renderPortfolio() {
+            const grid = document.getElementById('portfolio-grid');
+            grid.innerHTML = '';
+            game.properties.forEach(p => {
+                const profit = p.currentVal - p.purchasePrice;
+                const daily = EconomyEngine.calculateProfit(p);
+                grid.innerHTML += `
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <strong>${p.icon} ${p.name}</strong>
+                            <span class="indicator" style="background:var(--glass)">Lvl ${p.level}</span>
+                        </div>
+                        <div style="font-size:0.8rem; color:var(--text-dim);">
+                            <div style="display:flex; justify-content:space-between;"><span>Valuation</span><span>${f(p.currentVal)}</span></div>
+                            <div style="display:flex; justify-content:space-between;"><span>Total P/L</span><span style="color:${profit >= 0 ? 'var(--success)' : 'var(--danger)'}">${f(profit)}</span></div>
+                            <div style="display:flex; justify-content:space-between;"><span>Today's Net</span><span style="color:var(--success)">+${f(daily)}</span></div>
+                        </div>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:15px;">
+                            <button class="btn btn-ghost" style="font-size:0.7rem;" onclick="showUpgradeModal('${p.id}')">Upgrade (${f(calculateUpgradeCost(p))})</button>
+                            <button class="btn btn-danger" style="font-size:0.7rem;" onclick="showSalePreview('${p.id}')">Liquidate</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function generateMarket() {
+            const nw = calculateNetWorth();
+            const tier = nw < 250000 ? 1 : (nw < 5000000 ? 2 : 3);
+            const grid = document.getElementById('market-grid');
+            grid.innerHTML = '';
+
+            // P3: Dynamic Market Prices
+            const available = [...PROPERTY_TEMPLATES].filter(p => p.tier <= tier);
+            available.sort(() => 0.5 - Math.random()).slice(0, 12).forEach(p => {
+                const mPrice = p.price * game.marketTrend * SEASONS[game.seasonIndex].mod.price;
+                grid.innerHTML += `
+                    <div class="card" style="text-align:center;">
+                        <div style="font-size:2rem; margin-bottom:5px;">${p.icon}</div>
+                        <h3>${p.name}</h3>
+                        <p class="stat-label">Market Price: ${f(mPrice)}</p>
+                        <button class="btn btn-primary" style="width:100%; margin-top:15px;" onclick="showAssetDetails('${p.id}')">Inspect Asset</button>
+                    </div>
+                `;
+            });
+        }
+
+        function showAssetDetails(id) {
+            const t = PROPERTY_TEMPLATES.find(x => x.id === id);
+            const mPrice = t.price * game.marketTrend * SEASONS[game.seasonIndex].mod.price;
+            const deposit = mPrice * 0.2;
+            const estProfit = (mPrice * t.yield) / 365;
+
+            Modal.show(`
+                <h3>${t.icon} ${t.name}</h3>
+                <div class="preview-box">
+                    <div class="preview-line"><span>Full Purchase</span><strong>${f(mPrice)}</strong></div>
+                    <div class="preview-line"><span>Lease Deposit</span><strong>${f(deposit)}</strong></div>
+                    <div class="preview-line"><span>Est. Daily Rent</span><span style="color:var(--success)">+${f(estProfit)}</span></div>
+                    <div class="preview-line"><span>Maintenance Tier</span><span>${(t.maint * 100).toFixed(1)}%</span></div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <button class="btn btn-primary" onclick="buyAsset('${t.id}', false)">Buy Ownership</button>
+                    <button class="btn btn-ghost" onclick="buyAsset('${t.id}', true)">Lease Asset</button>
+                </div>
+            `);
         }
 
         /**
          * UTILS
          */
+        function f(n) {
+            let sign = n < 0 ? "-" : ""; n = Math.abs(n);
+            if (n >= 1e12) return sign + "$" + (n / 1e12).toFixed(2) + "T";
+            if (n >= 1e9) return sign + "$" + (n / 1e9).toFixed(2) + "B";
+            if (n >= 1e6) return sign + "$" + (n / 1e6).toFixed(1) + "M";
+            if (n >= 1e3) return sign + "$" + (n / 1e3).toFixed(1) + "k";
+            return sign + "$" + Math.floor(n).toLocaleString();
+        }
+
+        function calculateTotalAssets() {
+            return game.properties.reduce((s, p) => s + (p.isRented ? 0 : p.currentVal), 0);
+        }
+
         function calculateNetWorth() {
-            let propertyValue = game.properties.reduce((sum, p) => sum + (p.currentPrice * game.marketTrend), 0);
-            return game.money + propertyValue - game.debt;
+            // P7: Lease equity included
+            const leaseEquity = game.properties.reduce((s, p) => s + (p.isRented ? (p.deposit * 0.6) : 0), 0);
+            return game.money + calculateTotalAssets() + leaseEquity - game.debt;
+        }
+
+        function calculateLoanLimit() {
+            // P6: Loan based on purchase price (equity) + cash + credit score factor
+            const equity = game.properties.reduce((s, p) => s + (p.isRented ? 0 : (p.currentVal * 0.5)), 0);
+            const scoreMod = game.creditScore / 720;
+            return (equity + (game.money * 0.4)) * scoreMod;
+        }
+
+        function calculateUpgradeCost(p) {
+            return p.currentVal * 0.35 * SEASONS[game.seasonIndex].mod.upgrade;
+        }
+
+        const Modal = {
+            show(html) { 
+                document.getElementById('modal-content').innerHTML = `<button class="modal-close" onclick="Modal.close()">&times;</button>${html}`; 
+                document.getElementById('modal-overlay').style.display = 'flex'; 
+            },
+            close() { document.getElementById('modal-overlay').style.display = 'none'; }
+        };
+
+        function switchView(vid, btn) {
+            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('view-' + vid).classList.add('active');
+            btn.classList.add('active');
         }
 
         function logNews(msg) {
-            const ticker = document.getElementById('news-ticker');
-            const item = document.createElement('div');
-            item.className = 'news-item';
-            item.innerText = msg;
-            ticker.prepend(item);
+            const t = document.getElementById('news-ticker');
+            t.innerHTML = `<div style="margin-bottom:8px; padding-bottom:4px; border-bottom:1px solid var(--border)">Day ${game.day}: ${msg}</div>` + t.innerHTML;
         }
 
-        function switchView(viewId) {
-            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            
-            document.getElementById('view-' + viewId).classList.add('active');
-            event.target.classList.add('active');
+        function triggerMacroEvent() {
+            const ev = NEWS_EVENTS[Math.floor(Math.random() * NEWS_EVENTS.length)];
+            logNews(`<strong style="color:var(--accent)">[NEWS] ${ev.title}:</strong> ${ev.msg}`);
+        }
+
+        function renderInterestGraph() {
+            const c = document.getElementById('interest-graph'); c.innerHTML = '';
+            const max = Math.max(...game.history.interest, 0.1);
+            game.history.interest.forEach(v => {
+                c.innerHTML += `<div style="background:var(--accent); width:8px; height:${(v / max) * 100}%; border-radius:4px;"></div>`;
+            });
+        }
+
+        function renderLeaderboard() {
+            const lb = document.getElementById('leaderboard');
+            let all = [...game.ai, { name: "You", worth: calculateNetWorth(), isPlayer: true }].sort((a,b) => b.worth - a.worth);
+            lb.innerHTML = all.map((en, i) => `<div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:8px; ${en.isPlayer ? 'color:var(--accent); font-weight:bold;' : ''}"><span>${i+1}. ${en.name}</span><span>${f(en.worth)}</span></div>`).join('');
         }
 
         function saveGame() {
-            localStorage.setItem('city_investor_v2_save', JSON.stringify(game));
-            logNews("💾 Game progress saved to local storage.");
+            localStorage.setItem('city_investor_v6', JSON.stringify(game));
+            logNews("Cloud Sync Success.");
         }
 
         function loadGame() {
-            const saved = localStorage.getItem('city_investor_v2_save');
-            if (saved) {
-                game = JSON.parse(saved);
-                logNews("Welcome back, Investor.");
-            }
+            const s = localStorage.getItem('city_investor_v6');
+            if (s) game = { ...DEFAULT_STATE, ...JSON.parse(s) };
         }
 
-        function resetGame() {
-            if(confirm("Are you sure? This will wipe all progress.")) {
-                localStorage.removeItem('city_investor_v2_save');
-                location.reload();
-            }
+        function init() {
+            loadGame(); generateMarket(); updateUI(); setInterval(gameTick, 4000);
+            document.getElementById('modal-overlay').addEventListener('click', e => { if(e.target.id==='modal-overlay') Modal.close(); });
         }
 
-        // Initialize
         init();
     </script>
 </body>
