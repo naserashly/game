@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Investor V6.0 | Logic Repair & Economic Overhaul</title>
-
-    <!-- Google AdSense Code -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4117510270965271"
-     crossorigin="anonymous"></script>
+    <title>City Investor V7.1 | Real Market Edition</title>
 
     <style>
         :root {
@@ -30,7 +26,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
         body { background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
 
-        /* --- DASHBOARD HEADER --- */
         header {
             background: rgba(11, 15, 26, 0.95);
             backdrop-filter: blur(12px);
@@ -54,7 +49,6 @@
         .stat-value { font-size: 0.95rem; font-weight: 700; transition: color 0.3s; }
         .indicator { padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; margin-top: 4px; color: white; }
 
-        /* --- MAIN LAYOUT --- */
         .container {
             display: grid;
             grid-template-columns: 240px 1fr 320px;
@@ -77,7 +71,6 @@
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- CARDS & GRID --- */
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
 
@@ -91,7 +84,6 @@
         .btn-danger { background: var(--danger); color: white; }
         .btn-ghost { background: var(--glass); color: var(--text); border: 1px solid var(--border); }
 
-        /* --- MODALS --- */
         #modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(8px);
@@ -106,10 +98,35 @@
 
         .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-dim); font-size: 1.5rem; cursor: pointer; }
 
-        /* --- PREVIEW UI --- */
         .preview-box { background: var(--bg); padding: 15px; border-radius: 12px; margin: 15px 0; border: 1px solid var(--border); }
         .preview-line { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.9rem; }
         .preview-total { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); font-weight: bold; }
+
+        /* تعديل الأعمدة لتظهر العنوان عند الوقوف عليها */
+        .chart-bar { 
+            background: var(--accent); 
+            width: 8px; 
+            border-radius: 4px; 
+            cursor: help; 
+            transition: opacity 0.2s;
+        }
+        .chart-bar:hover { opacity: 0.7; }
+
+        /* مدخلات القروض */
+        .loan-input-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .loan-input-group input {
+            flex: 1;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            outline: none;
+        }
 
         @media (max-width: 1100px) {
             .container { grid-template-columns: 1fr; }
@@ -153,6 +170,7 @@
         <nav>
             <button class="nav-btn active" onclick="switchView('market', this)">🏙️ Market</button>
             <button class="nav-btn" onclick="switchView('portfolio', this)">💼 Portfolio</button>
+            <button class="nav-btn" onclick="switchView('garage', this)">🚗 Garage</button>
             <button class="nav-btn" onclick="switchView('bank', this)">🏦 Bank</button>
             <button class="nav-btn" onclick="switchView('stats', this)">📊 Metrics</button>
             <div style="margin-top: auto; padding-top: 20px;">
@@ -161,7 +179,6 @@
         </nav>
 
         <main>
-            <!-- MARKET -->
             <section id="view-market" class="view-section active">
                 <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                     <h2>Investment Opportunities</h2>
@@ -170,13 +187,22 @@
                 <div id="market-grid" class="grid"></div>
             </section>
 
-            <!-- PORTFOLIO -->
             <section id="view-portfolio" class="view-section">
                 <h2 style="margin-bottom: 1.5rem;">Asset Management</h2>
                 <div id="portfolio-grid" class="grid"></div>
             </section>
 
-            <!-- BANK -->
+            <section id="view-garage" class="view-section">
+                <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2>🚗 Car Dealership & Garage</h2>
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">Cars depreciate — flip fast or enjoy the ride</span>
+                </div>
+                <h3 style="margin-bottom:1rem; color:var(--text-dim); font-size:0.9rem;">SHOWROOM</h3>
+                <div id="car-market-grid" class="grid"></div>
+                <h3 style="margin:2rem 0 1rem; color:var(--text-dim); font-size:0.9rem;">MY GARAGE</h3>
+                <div id="garage-grid" class="grid"></div>
+            </section>
+
             <section id="view-bank" class="view-section">
                 <h2 style="margin-bottom: 1.5rem;">Financial Center</h2>
                 <div class="grid">
@@ -205,7 +231,6 @@
                 </div>
             </section>
 
-            <!-- STATS -->
             <section id="view-stats" class="view-section">
                 <h2 style="margin-bottom: 1.5rem;">Global Metrics</h2>
                 <div class="grid">
@@ -237,18 +262,14 @@
         </aside>
     </div>
 
-    <!-- MODAL OVERLAY -->
     <div id="modal-overlay">
         <div id="modal-content" class="modal"></div>
     </div>
 
     <script>
-        /**
-         * CONFIGURATION & TEMPLATES
-         */
         const SEASONS = [
             { name: "Spring", icon: "🌱", color: "var(--spring)", mod: { upgrade: 0.8, price: 1.05 } },
-            { name: "Summer", icon: "☀️", color: "var(--summer)", mod: { upgrade: 1.0, price: 1.15 } },
+            { name: "Summer", icon: "☀️", color: "var(--summer)", mod: { upgrade: 1.0, price: 1.10 } },
             { name: "Fall", icon: "🍂", color: "var(--fall)", mod: { upgrade: 1.0, price: 1.0 } },
             { name: "Winter", icon: "❄️", color: "var(--winter)", mod: { upgrade: 1.2, price: 0.95 } }
         ];
@@ -263,17 +284,29 @@
             { id: 'factory', name: 'Mega Factory', price: 75000000, yield: 0.10, maint: 0.02, tier: 3, icon: '🏭' }
         ];
 
+        const CAR_TEMPLATES = [
+            { id: 'sedan', name: 'Commuter Sedan', price: 22000, depr: 0.15, insure: 0.03, flip: 0.02, tier: 1, icon: '🚗' },
+            { id: 'suv', name: 'Family SUV', price: 45000, depr: 0.13, insure: 0.035, flip: 0.03, tier: 1, icon: '🚙' },
+            { id: 'sport', name: 'Sports Coupe', price: 95000, depr: 0.18, insure: 0.05, flip: 0.05, tier: 2, icon: '🏎️' },
+            { id: 'classic', name: 'Vintage Classic', price: 180000, depr: -0.06, insure: 0.02, flip: 0.10, tier: 2, icon: '🚘' },
+            { id: 'super', name: 'Supercar', price: 650000, depr: 0.10, insure: 0.06, flip: 0.08, tier: 3, icon: '🏁' },
+            { id: 'exotic', name: 'Ultra Rare Exotic', price: 2500000, depr: -0.04, insure: 0.02, flip: 0.15, tier: 3, icon: '💎' }
+        ];
+
         const NEWS_EVENTS = [
             { title: "Central Bank Alert", msg: "Interest rates adjusted due to inflation data.", type: "macro" },
             { title: "Housing Demand", msg: "Surge in residential buyers pushes prices up.", type: "macro" },
             { title: "Tourism Boom", msg: "Hospitality sector sees record-breaking profits.", type: "macro" },
-            { title: "Economic Cooling", msg: "Market cooling down. Prices stabilizing.", type: "macro" }
+            { title: "Economic Cooling", msg: "Market cooling down. Prices stabilizing.", type: "macro" },
+            { title: "Auto Show Buzz", msg: "Collector car auctions post record prices.", type: "macro" },
+            { title: "Fuel Price Shift", msg: "Fuel costs affect vehicle running expenses.", type: "macro" }
         ];
 
         const DEFAULT_STATE = {
             money: 50000,
             debt: 0,
             properties: [],
+            cars: [],
             interestRate: 0.045,
             marketState: 'Stable',
             marketTrend: 1.0,
@@ -290,25 +323,20 @@
 
         let game = { ...DEFAULT_STATE };
 
-        /**
-         * ECONOMY ENGINE (V6 Logic Fixes)
-         */
         const EconomyEngine = {
-            // P2: Real interest shifts based on cycle
+            // تحسين: الفائدة تتغير ببطء شديد جداً
             updateInterest() {
-                const rng = Math.random();
-                if (game.marketState === "Boom") {
-                    game.interestRate = 0.06 + (rng * 0.04); // 6-10%
-                } else if (game.marketState === "Recession") {
-                    game.interestRate = 0.01 + (rng * 0.03); // 1-4%
-                } else {
-                    game.interestRate = 0.03 + (rng * 0.03); // 3-6%
-                }
+                const target = game.marketState === "Boom" ? 0.075 : (game.marketState === "Recession" ? 0.025 : 0.045);
+                // تقليل الـ reversion من 0.15 إلى 0.02 ليكون التغير ناعم جداً
+                const reversion = (target - game.interestRate) * 0.02; 
+                // تقليل الـ noise من 0.006 إلى 0.0005 لتقليل القفزات العشوائية
+                const noise = (Math.random() - 0.5) * 0.0005; 
+                
+                game.interestRate = Math.min(0.12, Math.max(0.01, game.interestRate + reversion + noise));
                 game.history.interest.push(game.interestRate);
                 if (game.history.interest.length > 25) game.history.interest.shift();
             },
 
-            // P3: Global price shifts
             updateMarketTrend() {
                 const drift = (Math.random() * 0.02) - 0.01;
                 if (game.marketState === "Boom") game.marketTrend *= (1.008 + drift);
@@ -316,7 +344,6 @@
                 if (game.marketState === "Stable") game.marketTrend *= (1.001 + drift);
             },
 
-            // P4 & P8: Proper Rent and Maintenance calculation
             calculateProfit(p) {
                 const dailyRent = (p.currentVal * p.yield) / 365;
                 const dailyMaint = (p.currentVal * p.maint) / 365;
@@ -325,11 +352,14 @@
                 return (dailyRent * interestPenalty) - dailyMaint - dailyTax;
             },
 
-            // P9: Dynamic Credit Score
+            calculateCarDailyCost(c) {
+                return (c.currentVal * c.insure) / 365;
+            },
+
             updateCreditScore() {
                 const ltv = game.debt / Math.max(1, calculateTotalAssets());
                 const cashReserve = game.money / Math.max(1, game.debt);
-                
+
                 let score = 720;
                 if (ltv > 0.7) score -= 100;
                 if (ltv < 0.3) score += 50;
@@ -340,25 +370,22 @@
             }
         };
 
-        /**
-         * CORE LOOP
-         */
         function gameTick() {
             game.day++;
 
-            // Macro Changes
             EconomyEngine.updateMarketTrend();
+            EconomyEngine.updateInterest(); 
+
             if (game.day % 10 === 0) {
                 const states = ['Stable', 'Boom', 'Stable', 'Recession'];
                 game.marketState = states[Math.floor(Math.random() * states.length)];
-                EconomyEngine.updateInterest();
                 generateMarket();
+                generateCarMarket();
                 EconomyEngine.updateCreditScore();
                 triggerMacroEvent();
             }
             if (game.day % 30 === 0) game.seasonIndex = (game.seasonIndex + 1) % 4;
 
-            // P1: FIXED CASHFLOW LOGIC
             const dailyInterest = game.debt * (game.interestRate / 365);
             let dailyProfit = 0;
             game.properties.forEach(p => {
@@ -366,18 +393,21 @@
                 p.currentVal *= (1 + (Math.random() * 0.002 - 0.001));
             });
 
-            const netCashflow = dailyProfit - dailyInterest;
-            game.money += netCashflow; // Money is actually added now
+            let carCost = 0;
+            game.cars.forEach(c => {
+                carCost += EconomyEngine.calculateCarDailyCost(c);
+                const dailyDepr = c.depr / 365;
+                c.currentVal *= (1 - dailyDepr + (Math.random() * 0.004 - 0.002));
+            });
 
-            // AI Progress
+            const netCashflow = dailyProfit - dailyInterest - carCost;
+            game.money += netCashflow;
+
             game.ai.forEach(a => a.worth *= (1 + (Math.random() * 0.01)));
 
             updateUI();
         }
 
-        /**
-         * ACTIONS & MODALS
-         */
         function buyAsset(tid, isRented) {
             const t = PROPERTY_TEMPLATES.find(x => x.id === tid);
             const season = SEASONS[game.seasonIndex];
@@ -405,6 +435,53 @@
             } else {
                 alert("Insufficient funds!");
             }
+        }
+
+        function buyCar(tid) {
+            const t = CAR_TEMPLATES.find(x => x.id === tid);
+            const price = t.price * game.marketTrend;
+            if (game.money >= price) {
+                game.money -= price;
+                game.cars.push({
+                    id: self.crypto.randomUUID(),
+                    name: t.name,
+                    icon: t.icon,
+                    depr: t.depr,
+                    insure: t.insure,
+                    flip: t.flip,
+                    purchasePrice: price,
+                    currentVal: price
+                });
+                Modal.close();
+                logNews(`Bought a ${t.name} for ${f(price)}`);
+                updateUI();
+            } else {
+                alert("Insufficient funds!");
+            }
+        }
+
+        function showCarSalePreview(cid) {
+            const c = game.cars.find(x => x.id === cid);
+            const sellValue = c.currentVal * (1 - c.flip);
+            const profit = sellValue - c.purchasePrice;
+            Modal.show(`
+                <h3>Sell ${c.icon} ${c.name}</h3>
+                <div class="preview-box">
+                    <div class="preview-line"><span>Current Value</span><span>${f(c.currentVal)}</span></div>
+                    <div class="preview-line"><span>Dealer Flip Fee (${(c.flip*100).toFixed(0)}%)</span><span>-${f(c.currentVal - sellValue)}</span></div>
+                    <div class="preview-line preview-total"><span>Net Proceeds</span><span style="color:var(--success)">${f(sellValue)}</span></div>
+                    <div class="preview-line"><span>Total P/L</span><span style="${profit >= 0 ? 'color:var(--success)' : 'color:var(--danger)'}">${f(profit)}</span></div>
+                </div>
+                <button class="btn btn-primary" style="width:100%" onclick="executeSellCar('${cid}', ${sellValue})">Confirm Sale</button>
+            `);
+        }
+
+        function executeSellCar(cid, amount) {
+            const idx = game.cars.findIndex(x => x.id === cid);
+            game.money += amount;
+            game.cars.splice(idx, 1);
+            Modal.close();
+            updateUI();
         }
 
         function showUpgradeModal(pid) {
@@ -446,7 +523,7 @@
         function showSalePreview(pid) {
             const p = game.properties.find(x => x.id === pid);
             const rate = game.marketState === "Boom" ? 0.98 : (game.marketState === "Recession" ? 0.80 : 0.92);
-            
+
             if (p.isRented) {
                 const penalty = p.deposit * 0.4;
                 const refund = p.deposit - penalty;
@@ -483,58 +560,73 @@
             updateUI();
         }
 
-        /**
-         * BANKING
-         */
+        // تحسين: نافذة الاقتراض تسمح بكتابة أي مبلغ بدقة
         function showBorrowModal() {
             const limit = calculateLoanLimit();
-            const available = limit - game.debt;
+            const available = Math.max(0, limit - game.debt);
+            
             if (available <= 0) {
                 alert("Credit limit reached. Increase collateral.");
                 return;
             }
+
             Modal.show(`
                 <h3>Request Commercial Loan</h3>
-                <p>Available Credit: ${f(available)}</p>
-                <input type="range" id="loan-slider" style="width:100%; margin:20px 0;" min="0" max="${available}" step="1000" value="0" oninput="document.getElementById('loan-val').innerText = f(this.value)">
-                <div id="loan-val" style="font-size:1.5rem; font-weight:bold; text-align:center; margin-bottom:15px;">$0</div>
-                <button class="btn btn-primary" style="width:100%" onclick="executeBorrow()">Get Funds</button>
+                <p style="margin-bottom:10px;">Available Credit: <strong style="color:var(--success)">${f(available)}</strong></p>
+                <div class="loan-input-group">
+                    <input type="number" id="loan-input-field" placeholder="Enter amount" step="0.01" max="${available}">
+                    <button class="btn btn-ghost" onclick="document.getElementById('loan-input-field').value = ${available.toFixed(2)}">MAX</button>
+                </div>
+                <p style="font-size:0.75rem; color:var(--text-dim); margin-bottom:15px;">Daily interest will be added to your cashflow.</p>
+                <button class="btn btn-primary" style="width:100%" onclick="executeBorrowNew()">Get Funds</button>
             `);
         }
 
-        function executeBorrow() {
-            const val = parseInt(document.getElementById('loan-slider').value);
-            if (val > 0) {
-                game.debt += val;
-                game.money += val;
-                Modal.close();
-                updateUI();
+        function executeBorrowNew() {
+            const limit = calculateLoanLimit();
+            const available = Math.max(0, limit - game.debt);
+            const val = parseFloat(document.getElementById('loan-input-field').value);
+            
+            if (isNaN(val) || val <= 0) {
+                alert("Please enter a valid amount.");
+                return;
             }
+            if (val > available + 0.01) { // سماح بسيط لفرق الكسور
+                alert("Amount exceeds available credit.");
+                return;
+            }
+
+            game.debt += val;
+            game.money += val;
+            Modal.close();
+            updateUI();
         }
 
         function showRepayModal() {
-            const max = Math.min(game.money, game.debt);
             Modal.show(`
                 <h3>Repay Debt</h3>
-                <input type="number" id="repay-in" placeholder="Enter Amount" style="width:100%; padding:10px; background:var(--bg); border:1px solid var(--border); color:white; border-radius:8px;">
-                <button class="btn btn-danger" style="width:100%; margin-top:10px;" onclick="executeRepay()">Confirm Payment</button>
+                <p style="margin-bottom:10px;">Debt: <strong>${f(game.debt)}</strong> | Cash: <strong>${f(game.money)}</strong></p>
+                <div class="loan-input-group">
+                    <input type="number" id="repay-input-field" placeholder="Enter amount" step="0.01">
+                    <button class="btn btn-ghost" onclick="document.getElementById('repay-input-field').value = Math.min(game.debt, game.money).toFixed(2)">MAX</button>
+                </div>
+                <button class="btn btn-danger" style="width:100%" onclick="executeRepayNew()">Confirm Payment</button>
             `);
         }
 
-        function executeRepay() {
-            const val = parseInt(document.getElementById('repay-in').value);
-            const actual = Math.min(game.money, game.debt, val);
-            if (actual > 0) {
-                game.money -= actual;
-                game.debt -= actual;
-                Modal.close();
-                updateUI();
+        function executeRepayNew() {
+            const val = parseFloat(document.getElementById('repay-input-field').value);
+            if (isNaN(val) || val <= 0) {
+                alert("Please enter a valid amount.");
+                return;
             }
+            const actual = Math.min(game.money, game.debt, val);
+            game.money -= actual;
+            game.debt -= actual;
+            Modal.close();
+            updateUI();
         }
 
-        /**
-         * UI RENDERING
-         */
         function updateUI() {
             const nw = calculateNetWorth();
             const season = SEASONS[game.seasonIndex];
@@ -557,12 +649,14 @@
             document.getElementById('ui-bank-ratio').innerText = ((game.debt / Math.max(1, nw)) * 100).toFixed(1) + "%";
             document.getElementById('ui-bank-ltv').innerText = ((game.debt / Math.max(1, assets)) * 100).toFixed(1) + "%";
 
-            const cashflow = game.properties.reduce((s, p) => s + EconomyEngine.calculateProfit(p), 0) - dailyI;
+            const carCost = game.cars.reduce((s,c) => s + EconomyEngine.calculateCarDailyCost(c), 0);
+            const cashflow = game.properties.reduce((s, p) => s + EconomyEngine.calculateProfit(p), 0) - dailyI - carCost;
             document.getElementById('ui-cashflow').innerText = (cashflow >= 0 ? "+" : "") + f(cashflow);
             document.getElementById('ui-cashflow').style.color = cashflow >= 0 ? "var(--success)" : "var(--danger)";
             document.getElementById('ui-market-tier').innerText = `Tier: ${nw < 250000 ? 'Beginner' : (nw < 5000000 ? 'Professional' : 'Tycoon')}`;
 
             renderPortfolio();
+            renderGarage();
             renderLeaderboard();
             renderInterestGraph();
         }
@@ -591,6 +685,31 @@
                     </div>
                 `;
             });
+            if (!game.properties.length) grid.innerHTML = `<p style="color:var(--text-dim);">No properties yet. Visit the Market tab.</p>`;
+        }
+
+        function renderGarage() {
+            const grid = document.getElementById('garage-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            game.cars.forEach(c => {
+                const profit = c.currentVal - c.purchasePrice;
+                const daily = EconomyEngine.calculateCarDailyCost(c);
+                grid.innerHTML += `
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <strong>${c.icon} ${c.name}</strong>
+                        </div>
+                        <div style="font-size:0.8rem; color:var(--text-dim);">
+                            <div style="display:flex; justify-content:space-between;"><span>Current Value</span><span>${f(c.currentVal)}</span></div>
+                            <div style="display:flex; justify-content:space-between;"><span>Total P/L</span><span style="color:${profit >= 0 ? 'var(--success)' : 'var(--danger)'}">${f(profit)}</span></div>
+                            <div style="display:flex; justify-content:space-between;"><span>Daily Insurance</span><span style="color:var(--danger)">-${f(daily)}</span></div>
+                        </div>
+                        <button class="btn btn-danger" style="width:100%; font-size:0.7rem; margin-top:15px;" onclick="showCarSalePreview('${c.id}')">Sell</button>
+                    </div>
+                `;
+            });
+            if (!game.cars.length) grid.innerHTML = `<p style="color:var(--text-dim);">Garage is empty. Check the showroom above.</p>`;
         }
 
         function generateMarket() {
@@ -607,6 +726,27 @@
                         <h3>${p.name}</h3>
                         <p class="stat-label">Market Price: ${f(mPrice)}</p>
                         <button class="btn btn-primary" style="width:100%; margin-top:15px;" onclick="showAssetDetails('${p.id}')">Inspect Asset</button>
+                    </div>
+                `;
+            });
+        }
+
+        function generateCarMarket() {
+            const nw = calculateNetWorth();
+            const tier = nw < 250000 ? 1 : (nw < 5000000 ? 2 : 3);
+            const grid = document.getElementById('car-market-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            const available = CAR_TEMPLATES.filter(c => c.tier <= tier);
+            available.forEach(t => {
+                const price = t.price * game.marketTrend;
+                grid.innerHTML += `
+                    <div class="card" style="text-align:center;">
+                        <div style="font-size:2rem; margin-bottom:5px;">${t.icon}</div>
+                        <h3>${t.name}</h3>
+                        <p class="stat-label">Price: ${f(price)}</p>
+                        <p class="stat-label" style="color:${t.depr < 0 ? 'var(--success)' : 'var(--danger)'}">${t.depr < 0 ? 'Appreciates' : 'Depreciates'} ~${Math.abs(t.depr*100).toFixed(0)}%/yr</p>
+                        <button class="btn btn-primary" style="width:100%; margin-top:15px;" onclick="buyCar('${t.id}')" ${game.money < price ? 'disabled' : ''}>Buy</button>
                     </div>
                 `;
             });
@@ -633,9 +773,6 @@
             `);
         }
 
-        /**
-         * UTILS
-         */
         function f(n) {
             let sign = n < 0 ? "-" : ""; n = Math.abs(n);
             if (n >= 1e12) return sign + "$" + (n / 1e12).toFixed(2) + "T";
@@ -646,7 +783,9 @@
         }
 
         function calculateTotalAssets() {
-            return game.properties.reduce((s, p) => s + (p.isRented ? 0 : p.currentVal), 0);
+            const props = game.properties.reduce((s, p) => s + (p.isRented ? 0 : p.currentVal), 0);
+            const cars = game.cars.reduce((s, c) => s + c.currentVal, 0);
+            return props + cars;
         }
 
         function calculateNetWorth() {
@@ -665,9 +804,9 @@
         }
 
         const Modal = {
-            show(html) { 
-                document.getElementById('modal-content').innerHTML = `<button class="modal-close" onclick="Modal.close()">&times;</button>${html}`; 
-                document.getElementById('modal-overlay').style.display = 'flex'; 
+            show(html) {
+                document.getElementById('modal-content').innerHTML = `<button class="modal-close" onclick="Modal.close()">&times;</button>${html}`;
+                document.getElementById('modal-overlay').style.display = 'flex';
             },
             close() { document.getElementById('modal-overlay').style.display = 'none'; }
         };
@@ -689,11 +828,13 @@
             logNews(`<strong style="color:var(--accent)">[NEWS] ${ev.title}:</strong> ${ev.msg}`);
         }
 
+        // تحسين: الرسم البياني يظهر الرقم الدقيق عند تمرير الماوس
         function renderInterestGraph() {
             const c = document.getElementById('interest-graph'); c.innerHTML = '';
             const max = Math.max(...game.history.interest, 0.1);
             game.history.interest.forEach(v => {
-                c.innerHTML += `<div style="background:var(--accent); width:8px; height:${(v / max) * 100}%; border-radius:4px;"></div>`;
+                const ratePct = (v * 100).toFixed(2);
+                c.innerHTML += `<div class="chart-bar" style="height:${(v / max) * 100}%;" title="APR: ${ratePct}%"></div>`;
             });
         }
 
@@ -704,17 +845,30 @@
         }
 
         function saveGame() {
-            localStorage.setItem('city_investor_v6', JSON.stringify(game));
+            localStorage.setItem('city_investor_v7', JSON.stringify(game));
             logNews("Cloud Sync Success.");
         }
 
         function loadGame() {
-            const s = localStorage.getItem('city_investor_v6');
+            const s = localStorage.getItem('city_investor_v7');
             if (s) game = { ...DEFAULT_STATE, ...JSON.parse(s) };
         }
 
+        function randomizeSessionEconomy() {
+            const states = ['Stable', 'Boom', 'Recession'];
+            game.marketState = states[Math.floor(Math.random() * states.length)];
+            game.interestRate = 0.02 + Math.random() * 0.07; 
+            game.marketTrend = 0.9 + Math.random() * 0.3; 
+            game.history.interest = [game.interestRate];
+        }
+
         function init() {
-            loadGame(); generateMarket(); updateUI(); setInterval(gameTick, 4000);
+            loadGame();
+            if (game.day === 1) randomizeSessionEconomy();
+            generateMarket();
+            generateCarMarket();
+            updateUI();
+            setInterval(gameTick, 4000);
             document.getElementById('modal-overlay').addEventListener('click', e => { if(e.target.id==='modal-overlay') Modal.close(); });
         }
 
